@@ -27,7 +27,7 @@ I hope this works!
 ## Usage Guide
 Run the following in the terminal once installed:
 ```sh
-JuPi
+JuPi {optional: overridden config.txt path}
 ```
 Configurable options include:
 - `-h` or `--help` for help

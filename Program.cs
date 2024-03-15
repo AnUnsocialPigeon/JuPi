@@ -1,13 +1,13 @@
-﻿using Pastel;
+﻿using JuPi.Helpers;
+using Pastel;
 
-namespace JuPi {
+namespace JuPi
+{
     internal class Program {
         private static string ConfigDir = @"./config.txt";
 
         // Program vars
         private const string DisplayPrefix = "PI: ";
-        private static string PIGuess = "";
-        private static string LastGuess = "";
         
         internal static void Main(string[] args) {
             // Load args and config
@@ -23,49 +23,44 @@ namespace JuPi {
                 Environment.Exit(1);
             }
 
+            GuessHelper GuessHelper = new(pi);
+
             // MAIN SHIT
-            while (DoMainLoop(config))
+            Console.Write(DisplayPrefix);
+            while (DoMainLoop(GuessHelper))
                 continue;
+
+            // Logging on completion
+            config.Log(GuessHelper.CorrectGuess);
         }
 
-        private static bool DoMainLoop(Config config) {
+        private static bool DoMainLoop(GuessHelper GuessHelper) {
             ConsoleKeyInfo keyInput = Console.ReadKey(true);
             // Exit
             if (keyInput.Key == ConsoleKey.Enter) 
                 return false;
 
-            if (keyInput.Key == ConsoleKey.OemPeriod && !PIGuess.Contains('.'))
-                PIGuess += '.';
+            if (keyInput.Key == ConsoleKey.OemPeriod && !GuessHelper.Guess.Contains('.'))
+                GuessHelper.Guess += '.';
             else if (keyInput.Key == ConsoleKey.Backspace)
-                PIGuess = PIGuess.Remove(PIGuess.Length - 1);
+                GuessHelper.Pop();
             else if (keyInput.KeyChar >= 48 && keyInput.KeyChar <= 57)
-                PIGuess += keyInput.KeyChar.ToString();
+                GuessHelper.Guess += keyInput.KeyChar.ToString();
 
-            return DisplayPIGuess(PIGuess, config.PiData ?? "");
+            return DisplayPIGuess(GuessHelper);
         }
 
-        private static bool DisplayPIGuess(string guess, string data) {
-            if (guess.Length >= data.Length) {
-                Console.WriteLine("\nCongratulations! You won".Pastel("#55FF55"));
+        private static bool DisplayPIGuess(GuessHelper GuessHelper) {
+            if (GuessHelper.Guess.Length >= GuessHelper.Pi.Length) {
+                Console.WriteLine("\nCongratulations! You won. There are no more digits to PI.".Pastel("#55FF55"));
                 return false;
             }
-            if (PIGuess == LastGuess)
+            if (GuessHelper.Guess == GuessHelper.LastGuess)
                 return true;
 
-            string correct = "";
-            string incorrect = "";
-            for (int i = 0; i < guess.Length; i++) {
-                if (guess[i] == data[i] && incorrect == "") {
-                    correct += guess[i];
-                    continue;
-                }
-                incorrect += guess[i];
-            }
-
             Console.SetCursorPosition(0, 0);
-            Console.WriteLine($"{DisplayPrefix}{correct}{incorrect.Pastel("#FF3333")} ");
-            LastGuess = PIGuess;
-            
+            Console.Write($"{DisplayPrefix}{GuessHelper.CorrectGuess.Pastel("#BBFFBB")}{GuessHelper.IncorrectGuess.Pastel("#FF3333")}  ");
+            Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
             return true;
         }
     }

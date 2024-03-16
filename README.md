@@ -34,9 +34,10 @@ Configurable options include:
 - {More to be added soon!}
 
 ### How to play
-- To play the game, start writing PI! Green digits = good, red digits = bad.
-- To finish, press 'Enter'.
-- For a hint, press 'h'
+- To play the game, start writing PI! 
+ - Green digits = good, red digits = bad.
+- To finish, press `Enter`.
+- For a hint, press `h`
 
 The first run, the program will require access to the internet in order to download PI. 
 *(After the first run; no more internet required for download)*

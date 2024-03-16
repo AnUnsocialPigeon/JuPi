@@ -2,7 +2,7 @@
 *Author: An Unsocial Pigeon*
 
 ## Installation Guide
-Run the following shell script in your terminal:
+Run the following shell script in your terminal (this assumes the existence of .NET 8.0 or later.):
 ```sh
 #!/bin/bash
 

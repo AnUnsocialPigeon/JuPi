@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace JuPi.Helpers {
-    internal class GuessHelper {
+    public class GuessHelper {
         public GuessHelper(string Pi) {
             this.Pi = Pi;
             Guess = "";
@@ -49,6 +49,10 @@ namespace JuPi.Helpers {
                 return incorrect;
             }
         }
+
+        public int DigitCount => CorrectGuess.Where(x => x != '.').Count();
+
+        public int TheoreticalMaxDigits => Pi.Length - 1;
 
         public void Pop() {
             Guess = Guess.Remove(Guess.Length - 1);

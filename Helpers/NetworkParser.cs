@@ -1,16 +1,6 @@
 ﻿using HtmlAgilityPack;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace JuPi.Helpers
-{
+namespace JuPi.Helpers {
     public class NetworkParser
     {
 
@@ -53,14 +43,35 @@ namespace JuPi.Helpers
         /// </summary>
         /// <param name="url">URL to parse</param>
         /// <returns>PI as a string, or "" if failure</returns>
-        public string GetPiData(string url) => GetPiDataFromPiDayAsync(url) ?? "";
+        public string GetPiData(string url) {
+            // Bleugh
+            // TODO: Make this nice :)
+            if (url.Contains("newton.ex.ac.uk"))
+                return GetPiDataFromNewton(url) ?? "";
+            
+            if (url.Contains("cecm.sfu.ca")) 
+                return GetPiDataFromCescm(url) ?? "";
+            
+            return GetPiDataFromPiDay(url) ?? "";
+        }
+
+        private string? GetPiDataFromNewton(string url) {
+            string httpData = GetHttpContents(url).Result;
+            return new string(httpData.Where(x => (x >= 48 && x <= 57) || x == 46).ToArray());
+        }
+
+        private string? GetPiDataFromCescm(string url) {
+            string httpData = GetHttpContents(url).Result;
+            // Doesnt work
+            return GetDataAtFullXPath(httpData, @"//*")?.Replace(" ", "").Replace("\n", "");
+        }
 
         /// <summary>
         /// Gets pi data for PiDay website
         /// </summary>
         /// <param name="url">URL where PI is found</param>
         /// <returns>Pi, or null if not found.</returns>
-        private string? GetPiDataFromPiDayAsync(string url)
+        private string? GetPiDataFromPiDay(string url)
         {
             string httpData = GetHttpContents(url).Result;
             return GetDataAtFullXPath(httpData, @"//div[@id='million_pi']");

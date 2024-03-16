@@ -6,9 +6,6 @@ namespace JuPi
     internal class Program {
         private static string ConfigDir = @"./config.txt";
 
-        // Program vars
-        private const string DisplayPrefix = "PI: ";
-        
         internal static void Main(string[] args) {
             // Load args and config
             Config config = new(ConfigDir);
@@ -26,7 +23,7 @@ namespace JuPi
             GuessHelper GuessHelper = new(pi);
 
             // MAIN SHIT
-            Console.Write(DisplayPrefix);
+            DisplayPIGuess(GuessHelper, true);
             while (DoMainLoop(GuessHelper))
                 continue;
 
@@ -50,18 +47,20 @@ namespace JuPi
             return DisplayPIGuess(GuessHelper);
         }
 
-        private static bool DisplayPIGuess(GuessHelper GuessHelper) {
-            if (GuessHelper.Guess.Length >= GuessHelper.Pi.Length) {
+        private static bool DisplayPIGuess(GuessHelper GuessHelper, bool ForceWrite = false) {
+            if (!ForceWrite && GuessHelper.Guess.Length >= GuessHelper.Pi.Length) {
                 Console.WriteLine("\nCongratulations! You won. There are no more digits to PI.".Pastel("#55FF55"));
                 return false;
             }
-            if (GuessHelper.Guess == GuessHelper.LastGuess)
+            if (!ForceWrite && GuessHelper.Guess == GuessHelper.LastGuess)
                 return true;
 
-            Console.SetCursorPosition(0, 0);
-            Console.Write($"{DisplayPrefix}{GuessHelper.CorrectGuess.Pastel("#BBFFBB")}{GuessHelper.IncorrectGuess.Pastel("#FF3333")}  ");
-            Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
+            // Screen writing
+            WriterHandler.UpdateScreen(GuessHelper, ForceWrite);
+
             return true;
         }
+
+        
     }
 }

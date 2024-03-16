@@ -74,7 +74,7 @@ namespace JuPi.Helpers {
         internal void LoadConfig() {
             // Create new config, if not exist
             if (!File.Exists(ConfigPath))
-                File.WriteAllText(ConfigPath, $"{_piFileInit}: pi.txt\n{_piDownloadInit}: https://www.piday.org/million\n{_leaderboardInit}: leaderboard.csv");
+                File.WriteAllText(ConfigPath, $"{_piFileInit}: pi.txt\n{_piDownloadInit}: https://newton.ex.ac.uk/research/qsystems/collabs/pi/pi6.txt\n{_leaderboardInit}: leaderboard.csv");
 
             // Read the config file
             string[] configFile = File.ReadAllLines(ConfigPath);

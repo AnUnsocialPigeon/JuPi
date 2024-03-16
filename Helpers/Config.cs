@@ -51,6 +51,10 @@ namespace JuPi.Helpers {
                 Console.WriteLine("Help window activated:");
                 Console.WriteLine("\t-h or --help \tHelp!");
                 Console.WriteLine("\tfile path    \tThe file path of the Config file associated with this program");
+                Console.WriteLine("How to play:" +
+                    "\nType PI into the program" +
+                    "\nPress 'Enter' to finish" +
+                    "\nPress 'h' for a hint ;)");
                 Environment.Exit(0);
             }
             else if (_ConfigFileChanged) {
@@ -171,14 +175,17 @@ namespace JuPi.Helpers {
         /// Logs the current score to the leaderboard
         /// </summary>
         /// <param name="guess">Current run</param>
-        internal void Log(string guess) {
+        internal void Log(GuessHelper guessHelper) {
             if (LeaderboardPath == null) {
                 Console.WriteLine("Leaderboard does not exist");
                 return;
             }
 
             // Add to leaderboard
-            File.AppendAllText(LeaderboardPath, $"{DateTime.Now},{Username},{guess.Length},{guess}");
+            if (!File.Exists(LeaderboardPath)) 
+                File.WriteAllText(LeaderboardPath, "Time Finished,Username,Length Of Guess,Guess,Hints Used,Mistakes");    // To be updated with the below
+            
+            File.AppendAllText(LeaderboardPath, $"\n{DateTime.Now},{Username},{guessHelper.CorrectGuess.Length},{guessHelper.CorrectGuess},{guessHelper.Hints},{guessHelper.Mistakes}");
         }
     }
 }

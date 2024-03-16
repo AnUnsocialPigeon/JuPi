@@ -28,7 +28,7 @@ namespace JuPi
                 continue;
 
             // Logging on completion
-            config.Log(GuessHelper.CorrectGuess);
+            config.Log(GuessHelper);
         }
 
         private static bool DoMainLoop(GuessHelper GuessHelper) {
@@ -43,6 +43,8 @@ namespace JuPi
                 GuessHelper.Pop();
             else if (keyInput.KeyChar >= 48 && keyInput.KeyChar <= 57)
                 GuessHelper.Guess += keyInput.KeyChar.ToString();
+            else if (keyInput.KeyChar == 'h')
+                GuessHelper.Hint();
 
             return DisplayPIGuess(GuessHelper);
         }

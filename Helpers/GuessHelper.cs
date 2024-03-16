@@ -23,6 +23,8 @@ namespace JuPi.Helpers {
 
         public string LastGuess { get; private set; } = string.Empty;
 
+        public int Hints { get; private set; } = 0;
+
         public int ErrorIndex {
             get {
                 for (int i = 0; i < Guess.Length; i++)
@@ -54,8 +56,15 @@ namespace JuPi.Helpers {
 
         public int TheoreticalMaxDigits => Pi.Length - 1;
 
+        public int Mistakes { get; private set; } = -1;     // TODO: Implement
+
         public void Pop() {
             Guess = Guess.Remove(Guess.Length - 1);
+        }
+
+        public void Hint() {
+            Guess = CorrectGuess + Pi[CorrectGuess.Length];
+            Hints++;
         }
     }
 }

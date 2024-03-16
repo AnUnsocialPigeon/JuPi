@@ -7,6 +7,7 @@ namespace JuPi.Helpers
         private const string DisplayPrefix = "PI: ";
 
         public static void UpdateScreen(GuessHelper guessHelper, bool reWrite) {
+            // TODO: Make this just rewrite the last couple characters, with a check for console size changes.
             int cursor_x = GetCursorLeft(guessHelper);
             int cursor_y = GetCursorRight(guessHelper);
 
